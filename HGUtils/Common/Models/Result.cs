@@ -24,7 +24,7 @@ namespace HGUtils.Common.Models
 
     public class Result<T> : Result, IResult<T> where T : class
     {
-        public T Data { get; set; }
+        public T Results { get; set; }
 
         public Result() { }
 
@@ -32,7 +32,7 @@ namespace HGUtils.Common.Models
         {
             Code = (int)resultType;
             Message = DetailMessage = message;
-            Data = data;
+            Results = data;
         }
 
         public Result(string message, ResultType resultType = ResultType.Error, string detailMessage = null)
@@ -40,7 +40,7 @@ namespace HGUtils.Common.Models
             Code = (int)resultType;
             Message = message;
             DetailMessage = detailMessage ?? message;
-            Data = null;
+            Results = null;
         }
     }
 }

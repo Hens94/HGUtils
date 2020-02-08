@@ -23,8 +23,5 @@ namespace HGUtils.Common.ViewModels
     {
         [JsonPropertyName("results")]
         public T Results { get; set; }
-
-        [JsonPropertyName("errors")]
-        public ErrorCollection Errors { get; set; }
     }
 }

@@ -8,6 +8,11 @@ using System.Linq.Expressions;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using System.Text.Json;
+using Microsoft.AspNetCore.Http;
+using System.Net.Http;
+using HGUtils.Common.ViewModels;
+using HGUtils.Exceptions.ViewModels;
 
 namespace HGUtils.Exceptions.Extensions
 {
@@ -18,20 +23,15 @@ namespace HGUtils.Exceptions.Extensions
         
         internal delegate object ConstructorDelegate(params object[] args);
 
-        internal static T GetException<T>(HttpStatusCode statusCode, IEnumerable<ExceptionInfo> exceptionInfos) where T : BaseException
+        internal static T GetException<T>(
+            HttpStatusCode statusCode,
+            IEnumerable<ExceptionInfo> exceptionInfos) where T : BaseException
         {
-            if (exception is null)
-            {
-                var exceptionConst = CreateConstructor(typeof(T), typeof(string), typeof(int), typeof(HttpStatusCode), typeof(string));
-                return (T)exceptionConst(message, resultCode, statusCode, detailMessage);
-            }
-            else
-            {
-                Log.Error(exception, $"Ha ocurrido un error no controlado: {exception.Source}");
+            var details = JsonSerializer.Serialize(exceptionInfos);
+            Log.Error($"Errores generados", details);
 
-                var exceptionConst = CreateConstructor(typeof(T), typeof(Exception), typeof(string), typeof(int), typeof(HttpStatusCode), typeof(string));
-                return (T)exceptionConst(exception, message, resultCode, statusCode, detailMessage);
-            }
+            var exceptionConst = CreateConstructor(typeof(T), typeof(HttpStatusCode), typeof(IEnumerable<ExceptionInfo>));
+            return (T)exceptionConst(statusCode, exceptionInfos);
         }
 
         internal static ConstructorDelegate CreateConstructor(Type type, params Type[] parameters)
@@ -70,6 +70,55 @@ namespace HGUtils.Exceptions.Extensions
                 Operation = operation,
                 ExceptionName = exception.ToString(),
                 InnerError = exception.InnerException?.GetExceptionInfo(layer, service, operation)
+            };
+        }
+
+        internal static void AddApiErrorHeaders(this HttpContext context)
+        {
+            context.Response.Headers["Content-Type"] = new[] { "application/json" };
+            context.Response.Headers["Cache-Control"] = new[] { "no-cache, no-store, must-revalidate" };
+            context.Response.Headers["Pragma"] = new[] { "no-cache" };
+            context.Response.Headers["Expires"] = new[] { "0" };
+        }
+
+        internal static void AddApiErrorStatusCode(this HttpContext context, Exception exception)
+        {
+            context.Response.StatusCode =
+                exception is BaseException ?
+                (exception as BaseException).StatusCode :
+                (int)HttpStatusCode.InternalServerError;
+        }
+
+        internal static HttpContent ToErrorContent(this Exception exception)
+        {
+            var result = exception.ToErrorResult();
+            var json = JsonSerializer.Serialize(result);
+            return new StringContent(json, Encoding.UTF8, "application/json");
+        }
+
+        public static ErrorViewModel ToErrorResult(this Exception exception)
+        {
+            if (exception is BaseException)
+            {
+                var ex = (BaseException)exception;
+
+                return new ErrorViewModel
+                {
+                    Errors = ex.Errors
+                };
+            }
+
+            return new ErrorViewModel
+            {
+                Errors = new List<ExceptionInfo>
+                {
+                    new ExceptionInfo
+                    {
+                        Code = 999,
+                        UserMessage = "Ha ocurrido un error no controlado",
+                        ExceptionInfoDetail = exception.GetExceptionInfo(Layer.Undefined, "Undefined", "Undefined")
+                    }
+                }
             };
         }
     }

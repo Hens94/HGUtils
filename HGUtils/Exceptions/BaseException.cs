@@ -1,41 +1,27 @@
-﻿using System;
+﻿using HGUtils.Exceptions;
+using HGUtils.Exceptions.Models;
+using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Runtime.Serialization;
 using System.Text;
 
-namespace HGUtils.Exceptions
+namespace System
 {
     [Serializable]
     public abstract class BaseException : Exception, IException
     {
         public int StatusCode { get; set; }
-        public int ResultCode { get; set; }
-        public string DetailMessage { get; set; }
+        public IEnumerable<ExceptionInfo> Errors { get; set; }
 
         protected BaseException(
-            string message,
-            int resultCode,
             HttpStatusCode statusCode,
-            string detailMessage,
-            string exceptionType) : base(message)
+            IEnumerable<ExceptionInfo> errors,
+            string message = "Ha ocurrido un error no controlado",
+            Exception ex = null) : base(message, ex)
         {
-            ResultCode = resultCode;
             StatusCode = (int)statusCode;
-            DetailMessage = $"({exceptionType}) {detailMessage ?? message}";
-        }
-
-        protected BaseException(
-            Exception exception,
-            string message,
-            int resultCode,
-            HttpStatusCode statusCode,
-            string detailMessage,
-            string exceptionType) : base(message, exception)
-        {
-            ResultCode = resultCode;
-            StatusCode = (int)statusCode;
-            DetailMessage = $"({exceptionType}) {detailMessage ?? exception?.InnerException?.Message ?? exception?.Message ?? message}";
+            Errors = errors;
         }
 
         protected BaseException(SerializationInfo info, StreamingContext context)

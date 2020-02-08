@@ -18,13 +18,10 @@ namespace HGUtils.Helpers.Database
                     await transactionAction(dbConn, transaction);
                     transaction.Commit();
                 }
-                catch (Exception ex)
+                catch
                 {
                     transaction.Rollback();
-
-                    throw new DatabaseException(
-                        exception: ex,
-                        statusCode: HttpStatusCode.InternalServerError);
+                    throw;
                 }
             }
         }
