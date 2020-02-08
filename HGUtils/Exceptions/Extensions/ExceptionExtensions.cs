@@ -96,7 +96,7 @@ namespace HGUtils.Exceptions.Extensions
             return new StringContent(json, Encoding.UTF8, "application/json");
         }
 
-        internal static ErrorViewModel ToErrorResult(this Exception exception, bool isDevelopment)
+        private static ErrorViewModel ToErrorResult(this Exception exception, bool isDevelopment)
         {
             if (exception is BaseException)
             {
