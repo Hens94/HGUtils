@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace HGUtils.Exceptions.Middleware
 {
-    internal class ErrorMiddleware : IMiddleware
+    internal class DevelopErrorMiddleware : IMiddleware
     {
         public async Task InvokeAsync(HttpContext context, RequestDelegate next)
         {
@@ -19,7 +19,7 @@ namespace HGUtils.Exceptions.Middleware
             {                
                 context.AddApiErrorHeaders();
                 context.AddApiErrorStatusCode(ex);
-                await context.Response.WriteAsync(await ex.ToErrorContent().ReadAsStringAsync(), Encoding.UTF8);
+                await context.Response.WriteAsync(await ex.ToErrorContent(isDevelopment: true).ReadAsStringAsync(), Encoding.UTF8);
             }
         }
     }

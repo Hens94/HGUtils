@@ -9,6 +9,6 @@ namespace HGUtils.Exceptions.ViewModels
     public class ErrorViewModel
     {
         [JsonPropertyName("errors")]
-        public IEnumerable<ExceptionInfo> Errors { get; set; }
+        public IEnumerable<ErrorItemViewModel> Errors { get; set; }
     }
 }

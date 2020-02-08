@@ -89,14 +89,14 @@ namespace HGUtils.Exceptions.Extensions
                 (int)HttpStatusCode.InternalServerError;
         }
 
-        internal static HttpContent ToErrorContent(this Exception exception)
+        internal static HttpContent ToErrorContent(this Exception exception, bool isDevelopment = false)
         {
-            var result = exception.ToErrorResult();
+            var result = exception.ToErrorResult(isDevelopment);
             var json = JsonSerializer.Serialize(result);
             return new StringContent(json, Encoding.UTF8, "application/json");
         }
 
-        public static ErrorViewModel ToErrorResult(this Exception exception)
+        internal static ErrorViewModel ToErrorResult(this Exception exception, bool isDevelopment)
         {
             if (exception is BaseException)
             {
@@ -104,22 +104,38 @@ namespace HGUtils.Exceptions.Extensions
 
                 return new ErrorViewModel
                 {
-                    Errors = ex.Errors
+                    Errors = ex.ToErrorViewModel(isDevelopment)
                 };
             }
 
             return new ErrorViewModel
             {
-                Errors = new List<ExceptionInfo>
+                Errors = new List<ErrorItemViewModel>
                 {
-                    new ExceptionInfo
+                    new ErrorItemViewModel
                     {
                         Code = 999,
-                        UserMessage = "Ha ocurrido un error no controlado",
-                        ExceptionInfoDetail = exception.GetExceptionInfo(Layer.Undefined, "Undefined", "Undefined")
+                        Reason = "Ha ocurrido un error no controlado",
+                        DevelopErrorDetail = isDevelopment ? exception.GetExceptionInfo(Layer.Undefined, "Undefined", "Undefined") : null
                     }
                 }
             };
+        }
+
+        private static IEnumerable<ErrorItemViewModel> ToErrorViewModel<T>(
+            this T exception, bool isDevelopment) where T : BaseException
+        {
+            if (exception.Errors is null || !exception.Errors.Any()) yield break;
+
+            foreach (var error in exception.Errors)
+            {
+                yield return new ErrorItemViewModel
+                {
+                    Code = error.Code,
+                    Reason = error.UserMessage,
+                    DevelopErrorDetail = isDevelopment ? error.ExceptionInfoDetail : null
+                };
+            }
         }
     }
 }
