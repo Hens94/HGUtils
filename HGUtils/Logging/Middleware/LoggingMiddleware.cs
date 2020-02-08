@@ -9,11 +9,11 @@ using System.Threading.Tasks;
 
 namespace HGUtils.Logging.Middleware
 {
-    public class LoggerMiddleware : IMiddleware
+    public class LoggingMiddleware : IMiddleware
     {
-        private readonly ILoggerApi _logger;
+        private readonly ILogging _logger;
 
-        public LoggerMiddleware(ILoggerApi logger)
+        public LoggingMiddleware(ILogging logger)
         {
             _logger = logger;
         }

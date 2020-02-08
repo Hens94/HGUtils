@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace HGUtils.Logging.Contracts
 {
-    public interface ILoggerApi
+    public interface ILogging
     {
         Task WriteLog(RequestInfo request, ResponseInfo response);
     }

@@ -7,7 +7,7 @@ using System.Text;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
-    public static class ServiceCollectionExtensions
+    public static partial class ServiceCollectionExtensions
     {
         public static IServiceCollection AddErrorMiddleware(this IServiceCollection services, IHostEnvironment env) =>
             services
