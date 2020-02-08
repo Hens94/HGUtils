@@ -1,9 +1,6 @@
 ﻿using HGUtils.Exceptions.Middleware;
 using HGUtils.Helpers.Common;
 using Microsoft.Extensions.Hosting;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Microsoft.AspNetCore.Builder
 {

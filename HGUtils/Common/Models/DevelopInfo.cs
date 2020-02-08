@@ -1,7 +1,4 @@
-﻿using HGUtils.Common.Enums;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System;
 
 namespace HGUtils.Common.Models
 {

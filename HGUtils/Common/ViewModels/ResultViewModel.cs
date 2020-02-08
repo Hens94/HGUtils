@@ -1,8 +1,4 @@
 ﻿using HGUtils.Common.Interfaces;
-using HGUtils.Common.Models;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Text.Json.Serialization;
 
 namespace HGUtils.Common.ViewModels

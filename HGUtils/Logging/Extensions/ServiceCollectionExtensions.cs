@@ -1,8 +1,5 @@
 ﻿using HGUtils.Logging.Contracts;
 using HGUtils.Logging.Middleware;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Microsoft.Extensions.DependencyInjection
 {

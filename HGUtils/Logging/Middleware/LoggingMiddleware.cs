@@ -1,10 +1,7 @@
 ﻿using HGUtils.Logging.Contracts;
 using HGUtils.Logging.Extensions;
 using Microsoft.AspNetCore.Http;
-using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace HGUtils.Logging.Middleware

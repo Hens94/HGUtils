@@ -1,18 +1,16 @@
 ﻿using HGUtils.Common.Enums;
 using HGUtils.Exceptions.Models;
+using HGUtils.Exceptions.ViewModels;
+using Microsoft.AspNetCore.Http;
 using Serilog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Net;
-using System.Text;
-using System.Threading.Tasks;
-using System.Text.Json;
-using Microsoft.AspNetCore.Http;
 using System.Net.Http;
-using HGUtils.Common.ViewModels;
-using HGUtils.Exceptions.ViewModels;
+using System.Text;
+using System.Text.Json;
 
 namespace HGUtils.Exceptions.Extensions
 {
@@ -20,7 +18,7 @@ namespace HGUtils.Exceptions.Extensions
     {
         public delegate void ExecuteErrorInfo(string message, int resultCode = 999, HttpStatusCode statusCode = HttpStatusCode.InternalServerError, string detailMessage = null);
         public delegate void ExecuteErrorInfoWithException(BaseException exception);
-        
+
         internal delegate object ConstructorDelegate(params object[] args);
 
         internal static T GetException<T>(

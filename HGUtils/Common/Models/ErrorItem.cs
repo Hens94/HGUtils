@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace HGUtils.Common.Models
+﻿namespace HGUtils.Common.Models
 {
     public class ErrorItem
     {

@@ -3,7 +3,6 @@ using HGUtils.Exceptions.Contracts;
 using HGUtils.Exceptions.Models;
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 using static HGUtils.Exceptions.Extensions.ExceptionExtensions;
 
@@ -17,7 +16,7 @@ namespace HGUtils.Exceptions.Services
         {
             exceptions = new List<ExceptionInfo>();
         }
-        
+
         public async Task<T> UseCatchExceptionAsync<T, TException>(
             Func<IExceptionHandler.AddErrorInfo, IExceptionHandler.ExecError, Task<T>> func,
             Layer layer,
