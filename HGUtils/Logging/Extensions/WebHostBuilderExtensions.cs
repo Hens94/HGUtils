@@ -16,7 +16,9 @@ namespace Microsoft.AspNetCore.Hosting
                     .UseIf(hostingContext.HostingEnvironment.IsDevelopment(),
                         x => x
                             .MinimumLevel.Debug()
+                            .MinimumLevel.Override("Default", LogEventLevel.Information)
                             .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
+                            .MinimumLevel.Override("Microsoft.Hosting.Lifetime", LogEventLevel.Information)
                             .WriteTo.Console()
                             .AddLoggerConfiguration(developConfig),
                         x => x

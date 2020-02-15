@@ -2,6 +2,12 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Authors>Henry Gadea</Authors>
+    <Description>Utilidades para facilitar desarrollo de API.
+Manejador de errores y logging</Description>
+    <PackageTags>netcore3.1, api, rest, logging, errorHandler</PackageTags>
+    <NeutralLanguage></NeutralLanguage>
   </PropertyGroup>
 
   <ItemGroup>
