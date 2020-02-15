@@ -6,6 +6,7 @@ namespace HGUtils.Logging.Models
     {
         public DateTime ResponseTime { get; set; }
         public int StatusCode { get; set; }
+        public string Headers { get; set; }
         public string Body { get; set; }
     }
 }
