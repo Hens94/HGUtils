@@ -22,7 +22,7 @@ namespace HGUtils.Logging.Extensions
                 RequestTime = DateTime.Now,
                 Uri = $"{request.Scheme}://{request.Host}{request.Path}{request.QueryString}",
                 Method = request.Method,
-                Headers = request.Headers?.Select(x => new { Name = x.Key, x.Value })?.Aggregate("", (text, value) => $"{text} | {value.Name}: {value.Value}"),
+                Headers = request.Headers?.ToDictionary(x => x.Key, x => string.Join(";", x.Value)),
                 Body = string.IsNullOrEmpty(resquestBody) ? null : resquestBody
             };
         }
@@ -39,7 +39,7 @@ namespace HGUtils.Logging.Extensions
             {
                 ResponseTime = DateTime.Now,
                 StatusCode = response.StatusCode,
-                Headers = response.Headers.Select(x => new { Name = x.Key, x.Value })?.Aggregate("", (text, value) => $"{text} | {value.Name}: {value.Value}"),
+                Headers = response.Headers?.ToDictionary(x => x.Key, x => string.Join(";", x.Value)),
                 Body = string.IsNullOrEmpty(responseBody) ? null : responseBody
             };
         }

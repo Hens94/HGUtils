@@ -8,7 +8,7 @@
 Manejador de errores y logging</Description>
     <PackageTags>netcore3.1, api, rest, logging, errorHandler</PackageTags>
     <NeutralLanguage></NeutralLanguage>
-    <Version>1.0.1</Version>
+    <Version>1.0.0</Version>
   </PropertyGroup>
 
   <ItemGroup>
