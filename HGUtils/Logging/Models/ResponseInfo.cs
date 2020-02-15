@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Collections;
+using System.Collections.Generic;
 
 namespace HGUtils.Logging.Models
 {
@@ -7,7 +7,7 @@ namespace HGUtils.Logging.Models
     {
         public DateTime ResponseTime { get; set; }
         public int StatusCode { get; set; }
-        public IDictionary Headers { get; set; }
+        public Dictionary<string, string> Headers { get; set; }
         public string Body { get; set; }
     }
 }
