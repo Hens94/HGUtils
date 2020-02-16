@@ -22,5 +22,29 @@ namespace HGUtils.Exceptions.Contracts
             string operation,
             string genericErrorMessage = null,
             bool throwGenericException = true) where TException : BaseException;
+
+        Task UseCatchExceptionAsync<TException>(
+            Func<AddErrorInfo, ExecError, Task> func,
+            Layer layer,
+            string service,
+            string operation,
+            string genericErrorMessage = null,
+            bool throwGenericException = true) where TException : BaseException;
+
+        T UseCatchException<T, TException>(
+            Func<AddErrorInfo, ExecError, T> func,
+            Layer layer,
+            string service,
+            string operation,
+            string genericErrorMessage = null,
+            bool throwGenericException = true) where TException : BaseException;
+
+        void UseCatchException<TException>(
+            Action<AddErrorInfo, ExecError> func,
+            Layer layer,
+            string service,
+            string operation,
+            string genericErrorMessage = null,
+            bool throwGenericException = true) where TException : BaseException;
     }
 }
