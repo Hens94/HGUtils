@@ -1,7 +1,7 @@
 ﻿using HGUtils.Exceptions.Middleware;
 using HGUtils.Helpers.Common;
-using Microsoft.Extensions.Hosting;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Hosting;
 
 namespace Microsoft.Extensions.DependencyInjection
 {

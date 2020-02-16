@@ -8,12 +8,7 @@ namespace HGUtils.Helpers.Configuration
     {
         public static IServiceCollection AddConfig<T>(this IServiceCollection services, IConfiguration config, string sectionName = null) where T : class
         {
-            if (sectionName is null)
-            {
-                sectionName = typeof(T).Name;
-            }
-
-            var configuration = config.GetSection(sectionName).Get<T>();
+            var configuration = config.GetConfig<T>(sectionName);
 
             if (configuration is null)
             {
@@ -23,22 +18,14 @@ namespace HGUtils.Helpers.Configuration
             return services.AddSingleton(configuration);
         }
 
-        private static T Get<T>(this IConfiguration configuration)
-            => configuration.Get<T>(_ => { });
-
-        private static T Get<T>(this IConfiguration configuration, Action<BinderOptions> configureOptions)
+        public static T GetConfig<T>(this IConfiguration config, string sectionName = null) where T : class
         {
-            if (configuration == null)
+            if (sectionName is null)
             {
-                throw new ArgumentNullException(nameof(configuration));
+                sectionName = typeof(T).Name;
             }
 
-            var result = configuration.Get(typeof(T), configureOptions);
-            if (result == null)
-            {
-                return default(T);
-            }
-            return (T)result;
+            return config.GetSection(sectionName).Get<T>();
         }
     }
 }
