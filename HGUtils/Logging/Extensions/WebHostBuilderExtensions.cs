@@ -1,4 +1,5 @@
 ﻿using HGUtils.Helpers.Common;
+using Microsoft.Extensions.Hosting;
 using Serilog;
 using Serilog.Events;
 using System;
@@ -10,8 +11,11 @@ namespace Microsoft.AspNetCore.Hosting
         public static IWebHostBuilder UseFileLogging(
             this IWebHostBuilder webHostBuilder,
             Func<LoggerConfiguration, LoggerConfiguration> developConfig = null,
-            Func<LoggerConfiguration, LoggerConfiguration> aditionalConfig = null) =>
-            webHostBuilder
+            Func<LoggerConfiguration, LoggerConfiguration> aditionalConfig = null)
+        {
+            if (webHostBuilder is null) throw new ArgumentNullException(nameof(webHostBuilder));
+
+            return webHostBuilder
                 .UseSerilog((hostingContext, loggerConfiguration) => loggerConfiguration
                     .UseIf(hostingContext.HostingEnvironment.IsDevelopment(),
                         x => x
@@ -29,6 +33,7 @@ namespace Microsoft.AspNetCore.Hosting
                     .WriteTo.File(
                         path: $"{AppDomain.CurrentDomain.BaseDirectory}log\\{hostingContext.HostingEnvironment.ApplicationName}.txt",
                         rollingInterval: RollingInterval.Day));
+        }
 
         private static LoggerConfiguration AddLoggerConfiguration(
             this LoggerConfiguration configuration,
