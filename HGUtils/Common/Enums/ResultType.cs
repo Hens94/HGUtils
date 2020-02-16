@@ -4,6 +4,8 @@
     {
         Success = 0,
         WithWarning = 111,
-        Error = 999
+        DatabaseError = 777,
+        ThirdPartyError = 888,
+        ApiError = 999
     }
 }
