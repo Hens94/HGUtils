@@ -9,7 +9,7 @@ namespace HGUtils.Exceptions.Contracts
     {
         delegate void AddErrorInfo(
             string userMessage,
-            int resultCode = 999,
+            ResultType resultCode = ResultType.ApiError,
             string reason = null,
             string detail = null);
 

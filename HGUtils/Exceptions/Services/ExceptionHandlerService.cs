@@ -3,6 +3,8 @@ using HGUtils.Exceptions.Contracts;
 using HGUtils.Exceptions.Models;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using static HGUtils.Exceptions.Extensions.ExceptionExtensions;
 
@@ -17,6 +19,77 @@ namespace HGUtils.Exceptions.Services
             exceptions = new List<ExceptionInfo>();
         }
 
+        private void AddError<TException>(
+            string userMessage,
+            ResultType resultCode = ResultType.ApiError,
+            string reason = null,
+            string detail = null,
+            Layer layer = Layer.Undefined,
+            string service = null,
+            string operation = null) where TException : BaseException
+        {
+            exceptions.Add(new ExceptionInfo
+            {
+                Code = (int)resultCode,
+                UserMessage = userMessage,
+                ExceptionInfoDetail = new ExceptionInfoDetail
+                {
+                    Reason = reason ?? "Undefined",
+                    Detail = detail ?? reason ?? "Undefined",
+                    Layer = layer,
+                    Service = service,
+                    Operation = operation,
+                    ExceptionName = typeof(TException).Name
+                }
+            });
+        }
+
+        private void ProcessCatch<TException>(
+            Exception ex,
+            string genericErrorMessage,
+            Layer layer,
+            string service,
+            string operation,
+            bool throwGenericException) where TException : BaseException
+        {
+            exceptions.Add(new ExceptionInfo
+            {
+                Code = 999,
+                UserMessage = genericErrorMessage ?? "Ha ocurrido un error no controlado",
+                ExceptionInfoDetail = ex.GetExceptionInfo(layer, service, operation)
+            });
+
+            if (throwGenericException)
+            {
+                throw GetException<TException>(HttpStatusCode.InternalServerError, exceptions);
+            }
+        }
+
+        private void CheckExceptionInfo<TException>(
+            Layer layer,
+            string service,
+            string operation,
+            string genericErrorMessage = null) where TException : BaseException
+        {
+            if (!exceptions.Any())
+            {
+                exceptions.Add(new ExceptionInfo
+                {
+                    Code = 999,
+                    UserMessage = genericErrorMessage ?? "Ha ocurrido un error no controlado",
+                    ExceptionInfoDetail = new ExceptionInfoDetail
+                    {
+                        Reason = "Undefined",
+                        Detail = "Undefined",
+                        Layer = layer,
+                        Service = service,
+                        Operation = operation,
+                        ExceptionName = typeof(TException).Name
+                    }
+                });
+            }
+        }
+
         public async Task<T> UseCatchExceptionAsync<T, TException>(
             Func<IExceptionHandler.AddErrorInfo, IExceptionHandler.ExecError, Task<T>> func,
             Layer layer,
@@ -28,25 +101,10 @@ namespace HGUtils.Exceptions.Services
             try
             {
                 return await func(
-                    (userMessage, resultCode, reason, detail) =>
-                    {
-                        exceptions.Add(new ExceptionInfo
-                        {
-                            Code = resultCode,
-                            UserMessage = userMessage,
-                            ExceptionInfoDetail = new ExceptionInfoDetail
-                            {
-                                Reason = reason ?? "Undefined",
-                                Detail = detail ?? reason ?? "Undefined",
-                                Layer = layer,
-                                Service = service,
-                                Operation = operation,
-                                ExceptionName = typeof(TException).Name
-                            }
-                        });
-                    },
+                    (userMessage, resultCode, reason, detail) => AddError<TException>(userMessage, resultCode, reason, detail, layer, service, operation),
                     (statusCode) =>
                     {
+                        CheckExceptionInfo<TException>(layer, service, operation, genericErrorMessage);
                         throw GetException<TException>(statusCode, exceptions);
                     });
             }
@@ -56,18 +114,7 @@ namespace HGUtils.Exceptions.Services
             }
             catch (Exception ex)
             {
-                exceptions.Add(new ExceptionInfo
-                {
-                    Code = 999,
-                    UserMessage = genericErrorMessage ?? "Ha ocurrido un error no controlado",
-                    ExceptionInfoDetail = ex.GetExceptionInfo(layer, service, operation)
-                });
-
-                if (throwGenericException)
-                {
-                    throw GetException<TException>(System.Net.HttpStatusCode.InternalServerError, exceptions);
-                }
-
+                ProcessCatch<TException>(ex, genericErrorMessage, layer, service, operation, throwGenericException);
                 return default;
             }
         }
@@ -83,25 +130,10 @@ namespace HGUtils.Exceptions.Services
             try
             {
                 await func(
-                    (userMessage, resultCode, reason, detail) =>
-                    {
-                        exceptions.Add(new ExceptionInfo
-                        {
-                            Code = resultCode,
-                            UserMessage = userMessage,
-                            ExceptionInfoDetail = new ExceptionInfoDetail
-                            {
-                                Reason = reason ?? "Undefined",
-                                Detail = detail ?? reason ?? "Undefined",
-                                Layer = layer,
-                                Service = service,
-                                Operation = operation,
-                                ExceptionName = typeof(TException).Name
-                            }
-                        });
-                    },
+                    (userMessage, resultCode, reason, detail) => AddError<TException>(userMessage, resultCode, reason, detail, layer, service, operation),
                     (statusCode) =>
                     {
+                        CheckExceptionInfo<TException>(layer, service, operation, genericErrorMessage);
                         throw GetException<TException>(statusCode, exceptions);
                     });
             }
@@ -111,17 +143,7 @@ namespace HGUtils.Exceptions.Services
             }
             catch (Exception ex)
             {
-                exceptions.Add(new ExceptionInfo
-                {
-                    Code = 999,
-                    UserMessage = genericErrorMessage ?? "Ha ocurrido un error no controlado",
-                    ExceptionInfoDetail = ex.GetExceptionInfo(layer, service, operation)
-                });
-
-                if (throwGenericException)
-                {
-                    throw GetException<TException>(System.Net.HttpStatusCode.InternalServerError, exceptions);
-                }
+                ProcessCatch<TException>(ex, genericErrorMessage, layer, service, operation, throwGenericException);
             }
         }
 
@@ -136,25 +158,10 @@ namespace HGUtils.Exceptions.Services
             try
             {
                 return func(
-                    (userMessage, resultCode, reason, detail) =>
-                    {
-                        exceptions.Add(new ExceptionInfo
-                        {
-                            Code = resultCode,
-                            UserMessage = userMessage,
-                            ExceptionInfoDetail = new ExceptionInfoDetail
-                            {
-                                Reason = reason ?? "Undefined",
-                                Detail = detail ?? reason ?? "Undefined",
-                                Layer = layer,
-                                Service = service,
-                                Operation = operation,
-                                ExceptionName = typeof(TException).Name
-                            }
-                        });
-                    },
+                    (userMessage, resultCode, reason, detail) => AddError<TException>(userMessage, resultCode, reason, detail, layer, service, operation),
                     (statusCode) =>
                     {
+                        CheckExceptionInfo<TException>(layer, service, operation, genericErrorMessage);
                         throw GetException<TException>(statusCode, exceptions);
                     });
             }
@@ -164,18 +171,7 @@ namespace HGUtils.Exceptions.Services
             }
             catch (Exception ex)
             {
-                exceptions.Add(new ExceptionInfo
-                {
-                    Code = 999,
-                    UserMessage = genericErrorMessage ?? "Ha ocurrido un error no controlado",
-                    ExceptionInfoDetail = ex.GetExceptionInfo(layer, service, operation)
-                });
-
-                if (throwGenericException)
-                {
-                    throw GetException<TException>(System.Net.HttpStatusCode.InternalServerError, exceptions);
-                }
-
+                ProcessCatch<TException>(ex, genericErrorMessage, layer, service, operation, throwGenericException);
                 return default;
             }
         }
@@ -191,25 +187,10 @@ namespace HGUtils.Exceptions.Services
             try
             {
                 func(
-                    (userMessage, resultCode, reason, detail) =>
-                    {
-                        exceptions.Add(new ExceptionInfo
-                        {
-                            Code = resultCode,
-                            UserMessage = userMessage,
-                            ExceptionInfoDetail = new ExceptionInfoDetail
-                            {
-                                Reason = reason ?? "Undefined",
-                                Detail = detail ?? reason ?? "Undefined",
-                                Layer = layer,
-                                Service = service,
-                                Operation = operation,
-                                ExceptionName = typeof(TException).Name
-                            }
-                        });
-                    },
+                    (userMessage, resultCode, reason, detail) => AddError<TException>(userMessage, resultCode, reason, detail, layer, service, operation),
                     (statusCode) =>
                     {
+                        CheckExceptionInfo<TException>(layer, service, operation, genericErrorMessage);
                         throw GetException<TException>(statusCode, exceptions);
                     });
             }
@@ -219,17 +200,7 @@ namespace HGUtils.Exceptions.Services
             }
             catch (Exception ex)
             {
-                exceptions.Add(new ExceptionInfo
-                {
-                    Code = 999,
-                    UserMessage = genericErrorMessage ?? "Ha ocurrido un error no controlado",
-                    ExceptionInfoDetail = ex.GetExceptionInfo(layer, service, operation)
-                });
-
-                if (throwGenericException)
-                {
-                    throw GetException<TException>(System.Net.HttpStatusCode.InternalServerError, exceptions);
-                }
+                ProcessCatch<TException>(ex, genericErrorMessage, layer, service, operation, throwGenericException);
             }
         }
     }
