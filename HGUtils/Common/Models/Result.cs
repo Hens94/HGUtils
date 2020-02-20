@@ -11,7 +11,7 @@ namespace HGUtils.Common.Models
 
         public Result() { }
 
-        public Result(string message, ResultType resultType = ResultType.Error, string detailMessage = null)
+        public Result(string message, ResultType resultType = ResultType.ApiError, string detailMessage = null)
         {
             Code = (int)resultType;
             Message = message;
@@ -32,7 +32,7 @@ namespace HGUtils.Common.Models
             Results = data;
         }
 
-        public Result(string message, ResultType resultType = ResultType.Error, string detailMessage = null)
+        public Result(string message, ResultType resultType = ResultType.ApiError, string detailMessage = null)
         {
             Code = (int)resultType;
             Message = message;

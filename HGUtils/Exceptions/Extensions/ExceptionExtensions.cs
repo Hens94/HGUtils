@@ -23,13 +23,15 @@ namespace HGUtils.Exceptions.Extensions
 
         internal static T GetException<T>(
             HttpStatusCode statusCode,
-            IEnumerable<ExceptionInfo> exceptionInfos) where T : BaseException
+            IEnumerable<ExceptionInfo> exceptionInfos,
+            string message = null,
+            Exception ex = null) where T : BaseException
         {
             var details = JsonSerializer.Serialize(exceptionInfos);
             Log.Error($"Errores generados", details);
 
-            var exceptionConst = CreateConstructor(typeof(T), typeof(HttpStatusCode), typeof(IEnumerable<ExceptionInfo>));
-            return (T)exceptionConst(statusCode, exceptionInfos);
+            var exceptionConst = CreateConstructor(typeof(T), typeof(HttpStatusCode), typeof(IEnumerable<ExceptionInfo>), typeof(string), typeof(Exception));
+            return (T)exceptionConst(statusCode, exceptionInfos, message, ex);
         }
 
         internal static ConstructorDelegate CreateConstructor(Type type, params Type[] parameters)
@@ -66,7 +68,7 @@ namespace HGUtils.Exceptions.Extensions
                 Layer = layer,
                 Service = service,
                 Operation = operation,
-                ExceptionName = exception.ToString(),
+                ExceptionName = exception.GetType().Name,
                 InnerError = exception.InnerException?.GetExceptionInfo(layer, service, operation)
             };
         }
@@ -96,7 +98,7 @@ namespace HGUtils.Exceptions.Extensions
 
         private static ErrorViewModel ToErrorResult(this Exception exception, bool isDevelopment)
         {
-            if (exception is BaseException)
+            if (!(exception as BaseException is null))
             {
                 var ex = (BaseException)exception;
 
