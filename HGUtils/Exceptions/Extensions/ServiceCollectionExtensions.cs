@@ -11,7 +11,7 @@ namespace Microsoft.Extensions.DependencyInjection
     {
         public static IServiceCollection AddErrorHandler(this IServiceCollection services, IWebHostEnvironment env) =>
             services
-                .AddSingleton<IExceptionHandler, ExceptionHandlerService>()
+                .AddScoped<IExceptionHandler, ExceptionHandlerService>()
                 .UseIf(env.IsDevelopment(),
                     x => x.AddTransient<DevelopErrorMiddleware>(),
                     x => x.AddTransient<ErrorMiddleware>());
