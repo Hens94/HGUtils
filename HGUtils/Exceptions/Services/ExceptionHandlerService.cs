@@ -36,7 +36,7 @@ namespace HGUtils.Exceptions.Services
                 {
                     Reason = reason ?? "Undefined",
                     Detail = detail ?? reason ?? "Undefined",
-                    Layer = layer,
+                    Layer = layer.ToString(),
                     Service = service,
                     Operation = operation,
                     ExceptionName = typeof(TException).Name
@@ -81,7 +81,7 @@ namespace HGUtils.Exceptions.Services
                     {
                         Reason = "Undefined",
                         Detail = "Undefined",
-                        Layer = layer,
+                        Layer = layer.ToString(),
                         Service = service,
                         Operation = operation,
                         ExceptionName = typeof(TException).Name

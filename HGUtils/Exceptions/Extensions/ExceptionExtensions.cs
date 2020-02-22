@@ -27,8 +27,9 @@ namespace HGUtils.Exceptions.Extensions
             string message = null,
             Exception ex = null) where T : BaseException
         {
-            var details = JsonSerializer.Serialize(exceptionInfos);
-            Log.Error($"Errores generados", details);
+            var details = JsonSerializer.Serialize(exceptionInfos, new JsonSerializerOptions() { WriteIndented = true });
+            Log.Error($"Errores generados");
+            Log.Error(details);
 
             var exceptionConst = CreateConstructor(typeof(T), typeof(HttpStatusCode), typeof(IEnumerable<ExceptionInfo>), typeof(string), typeof(Exception));
             return (T)exceptionConst(statusCode, exceptionInfos, message, ex);
@@ -65,7 +66,7 @@ namespace HGUtils.Exceptions.Extensions
             {
                 Reason = exception.Message,
                 Detail = exception.StackTrace,
-                Layer = layer,
+                Layer = layer.ToString(),
                 Service = service,
                 Operation = operation,
                 ExceptionName = exception.GetType().Name,

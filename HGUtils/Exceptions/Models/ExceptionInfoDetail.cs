@@ -8,7 +8,7 @@ namespace HGUtils.Exceptions.Models
         public string Reason { get; set; } = "Undefined";
         public string Detail { get; set; } = "Undefined";
         public DateTime Time => DateTime.Now;
-        public Layer Layer { get; set; } = Layer.Undefined;
+        public string Layer { get; set; } = "Undefined";
         public string Service { get; set; } = "Undefined";
         public string Operation { get; set; } = "Undefined";
         public string ExceptionName { get; set; } = "Undefined";
