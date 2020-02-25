@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -83,6 +84,58 @@ namespace HGUtils.Helpers.HttpClient
                 contentType);
 
             request.Content = stringContent;
+        }
+
+        public static HttpRequestMessage Clone(this HttpRequestMessage request)
+        {
+            var clone = new HttpRequestMessage(request.Method, request.RequestUri)
+            {
+                Content = request.Content.Clone(),
+                Version = request.Version
+            };
+            foreach (KeyValuePair<string, object> prop in request.Properties)
+            {
+                clone.Properties.Add(prop);
+            }
+            foreach (KeyValuePair<string, IEnumerable<string>> header in request.Headers)
+            {
+                clone.Headers.TryAddWithoutValidation(header.Key, header.Value);
+            }
+
+            return clone;
+        }
+
+        public static HttpResponseMessage Clone(this HttpResponseMessage response)
+        {
+            var clone = new HttpResponseMessage(response.StatusCode)
+            {
+                Content = response.Content.Clone(),
+                Version = response.Version,
+                ReasonPhrase = response.ReasonPhrase,
+                RequestMessage = response.RequestMessage.Clone()
+            };
+            foreach (KeyValuePair<string, IEnumerable<string>> header in response.Headers)
+            {
+                clone.Headers.TryAddWithoutValidation(header.Key, header.Value);
+            }
+
+            return clone;
+        }
+
+        public static HttpContent Clone(this HttpContent content)
+        {
+            if (content == null) return null;
+
+            var ms = new MemoryStream();
+            content.CopyToAsync(ms).Wait();
+            ms.Position = 0;
+
+            var clone = new StreamContent(ms);
+            foreach (KeyValuePair<string, IEnumerable<string>> header in content.Headers)
+            {
+                clone.Headers.Add(header.Key, header.Value);
+            }
+            return clone;
         }
     }
 }
