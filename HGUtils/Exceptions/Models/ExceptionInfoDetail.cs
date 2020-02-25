@@ -1,5 +1,4 @@
-﻿using HGUtils.Common.Enums;
-using System;
+﻿using System;
 
 namespace HGUtils.Exceptions.Models
 {
