@@ -87,7 +87,7 @@ namespace HGUtils.Helpers.Database
                 var parameters = new DynamicParameters();
                 parameters.Add(resultCodePropertyName, null, DbType.Int32, ParameterDirection.Output);
                 parameters.Add(resultMessagePropertyName, null, DbType.String, ParameterDirection.Output, 500);
-                parameters.Add(resultDetailPropertyName, null, DbType.String, ParameterDirection.Output, 1000);
+                parameters.Add(resultDetailPropertyName, null, DbType.String, ParameterDirection.Output, 4000);
 
                 await func(connection, parameters, result);
 
