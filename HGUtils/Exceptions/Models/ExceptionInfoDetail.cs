@@ -4,6 +4,7 @@ namespace HGUtils.Exceptions.Models
 {
     public class ExceptionInfoDetail
     {
+        public string ErrorType { get; set; } = "Undefined";
         public string Reason { get; set; } = "Undefined";
         public string Detail { get; set; } = "Undefined";
         public DateTime Time => DateTime.Now;

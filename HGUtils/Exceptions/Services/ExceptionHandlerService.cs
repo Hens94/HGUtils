@@ -34,6 +34,7 @@ namespace HGUtils.Exceptions.Services
                 UserMessage = userMessage,
                 ExceptionInfoDetail = new ExceptionInfoDetail
                 {
+                    ErrorType = resultCode.ToString(),
                     Reason = reason ?? "Undefined",
                     Detail = detail ?? reason ?? "Undefined",
                     Layer = layer.ToString(),
@@ -79,6 +80,7 @@ namespace HGUtils.Exceptions.Services
                     UserMessage = genericErrorMessage ?? "Ha ocurrido un error no controlado",
                     ExceptionInfoDetail = new ExceptionInfoDetail
                     {
+                        ErrorType = ResultType.ApiError.ToString(),
                         Reason = "Undefined",
                         Detail = "Undefined",
                         Layer = layer.ToString(),
