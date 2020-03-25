@@ -13,6 +13,6 @@ namespace HGUtils.Helpers.Common
             conditional ? funcIf(obj) : obj;
 
         public static bool IsSuccess(this IResult result) =>
-            Enum.TryParse<ResultType>(result.Code.ToString(), out var resultType) ? resultType.Equals(ResultType.Success) : false;
+            Enum.TryParse<ResultType>(result.Code.ToString(), out var resultType) && resultType.Equals(ResultType.Success);
     }
 }
