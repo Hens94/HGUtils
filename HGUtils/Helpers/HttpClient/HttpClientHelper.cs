@@ -86,7 +86,7 @@ namespace HGUtils.Helpers.HttpClient
             request.Content = stringContent;
         }
 
-        public static HttpRequestMessage Clone(this HttpRequestMessage request)
+        internal static HttpRequestMessage Clone(this HttpRequestMessage request)
         {
             var clone = new HttpRequestMessage(request.Method, request.RequestUri)
             {
@@ -105,7 +105,7 @@ namespace HGUtils.Helpers.HttpClient
             return clone;
         }
 
-        public static HttpResponseMessage Clone(this HttpResponseMessage response)
+        internal static HttpResponseMessage Clone(this HttpResponseMessage response)
         {
             var clone = new HttpResponseMessage(response.StatusCode)
             {
@@ -122,7 +122,7 @@ namespace HGUtils.Helpers.HttpClient
             return clone;
         }
 
-        public static HttpContent Clone(this HttpContent content)
+        private static HttpContent Clone(this HttpContent content)
         {
             if (content == null) return null;
 
