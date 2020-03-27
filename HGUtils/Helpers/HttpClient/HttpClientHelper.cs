@@ -86,7 +86,7 @@ namespace HGUtils.Helpers.HttpClient
             request.Content = stringContent;
         }
 
-        internal static HttpRequestMessage Clone(this HttpRequestMessage request)
+        public static HttpRequestMessage Clone(this HttpRequestMessage request)
         {
             var clone = new HttpRequestMessage(request.Method, request.RequestUri)
             {
@@ -105,7 +105,7 @@ namespace HGUtils.Helpers.HttpClient
             return clone;
         }
 
-        internal static HttpResponseMessage Clone(this HttpResponseMessage response)
+        public static HttpResponseMessage Clone(this HttpResponseMessage response)
         {
             var clone = new HttpResponseMessage(response.StatusCode)
             {
