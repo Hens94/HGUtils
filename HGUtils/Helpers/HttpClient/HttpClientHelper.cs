@@ -1,12 +1,15 @@
-﻿using System;
+﻿using HGUtils.Logging.Extensions;
+using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json;
+using System.Threading.Tasks;
 using System.Web;
 
 namespace HGUtils.Helpers.HttpClient
@@ -136,6 +139,57 @@ namespace HGUtils.Helpers.HttpClient
                 clone.Headers.Add(header.Key, header.Value);
             }
             return clone;
+        }
+
+        public static async Task WriteRequestAndResponseInLogsAsync(this HttpResponseMessage response)
+        {
+            var requestLog = await response.RequestMessage.FormatRequest();
+            var responseLog = await response.FormatResponse();
+
+            requestLog.WriteApiRequestInLog();
+            responseLog.WriteApiResponseInLog();
+        }
+
+        public delegate Task<string> GetTokenDelegate(bool refreshToken);
+
+        public static async Task<HttpResponseMessage> SendAndRefrechAuthTokenAsync(
+            this System.Net.Http.HttpClient httpClient,
+            HttpRequestMessage httpRequest,
+            GetTokenDelegate getToken = null,
+            bool reuseAuthToken = false,
+            int refreshTokenRetry = 1,
+            bool writeInLogs = false,
+            int refreshTokenRetryCount = 1,
+            bool refreshToken = false)
+        {
+            if (!(getToken is null)) return await httpClient.SendAsync(httpRequest);
+
+            var request = httpRequest;
+
+            if (refreshToken)
+            {
+                request = httpRequest.Clone();
+            }
+
+            var response = await httpClient
+                .AddAuthorizationHeader(await getToken(refreshToken))
+                .SendAsync(request);
+
+            if (reuseAuthToken && response.StatusCode.Equals(HttpStatusCode.Unauthorized) && refreshTokenRetryCount <= refreshTokenRetry)
+            {
+                response = await httpClient.SendAndRefrechAuthTokenAsync(
+                    request,
+                    getToken,
+                    reuseAuthToken,
+                    refreshTokenRetry,
+                    writeInLogs,
+                    refreshTokenRetryCount + 1,
+                    true);
+            }
+
+            if (writeInLogs) await response.WriteRequestAndResponseInLogsAsync();
+
+            return response;
         }
     }
 }
