@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace HGUtils.Validations.Filters
 {
-    public sealed class RequestValidationAttribute : ActionFilterAttribute
+    internal sealed class RequestValidationAttribute : ActionFilterAttribute
     {
         public override void OnActionExecuting(ActionExecutingContext context)
         {

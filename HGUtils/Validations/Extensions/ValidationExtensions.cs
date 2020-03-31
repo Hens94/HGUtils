@@ -10,7 +10,7 @@ namespace HGUtils.Validations.Extensions
 {
     public static class ValidationExtensions
     {
-        public static void GenerateError(this ActionExecutingContext context)
+        internal static void GenerateError(this ActionExecutingContext context)
         {
             var modelStateErrors = context.ModelState.Values.Where(v => v.Errors.Count > 0)
                     .SelectMany(v => v.Errors);
