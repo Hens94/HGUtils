@@ -136,7 +136,7 @@ namespace HGUtils.Helpers.HttpClient
             var clone = new StreamContent(ms);
             foreach (KeyValuePair<string, IEnumerable<string>> header in content.Headers)
             {
-                clone.Headers.Add(header.Key, header.Value);
+                clone.Headers.TryAddWithoutValidation(header.Key, header.Value);
             }
             return clone;
         }
