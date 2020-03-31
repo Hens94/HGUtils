@@ -162,7 +162,7 @@ namespace HGUtils.Helpers.HttpClient
             int refreshTokenRetryCount = 1,
             bool refreshToken = false)
         {
-            if (!(getToken is null)) return await httpClient.SendAsync(httpRequest);
+            if (getToken is null) return await httpClient.SendAsync(httpRequest);
 
             var request = httpRequest;
 
