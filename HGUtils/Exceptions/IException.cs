@@ -1,13 +1,11 @@
-﻿using System;
+﻿using HGUtils.Exceptions.Models;
 using System.Collections.Generic;
-using System.Text;
 
 namespace HGUtils.Exceptions
 {
     public interface IException
     {
-        public int StatusCode { get; set; }
-        public int ResultCode { get; set; }
-        public string DetailMessage { get; set; }
+        int StatusCode { get; set; }
+        IEnumerable<ExceptionInfo> Errors { get; set; }
     }
 }

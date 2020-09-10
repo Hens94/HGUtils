@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace HGUtils.Common.Enums
+﻿namespace HGUtils.Common.Enums
 {
     public enum Layer
     {
         Undefined,
         Application,
-        Client,        
+        Client,
         Data,
         Common,
         Host

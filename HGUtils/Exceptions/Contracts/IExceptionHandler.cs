@@ -1,9 +1,6 @@
 ﻿using HGUtils.Common.Enums;
-using HGUtils.Exceptions.Models;
 using System;
-using System.Collections.Generic;
 using System.Net;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace HGUtils.Exceptions.Contracts
@@ -12,7 +9,7 @@ namespace HGUtils.Exceptions.Contracts
     {
         delegate void AddErrorInfo(
             string userMessage,
-            int resultCode = 999,
+            ResultType resultCode = ResultType.ApiError,
             string reason = null,
             string detail = null);
 
@@ -20,6 +17,30 @@ namespace HGUtils.Exceptions.Contracts
 
         Task<T> UseCatchExceptionAsync<T, TException>(
             Func<AddErrorInfo, ExecError, Task<T>> func,
+            Layer layer,
+            string service,
+            string operation,
+            string genericErrorMessage = null,
+            bool throwGenericException = true) where TException : BaseException;
+
+        Task UseCatchExceptionAsync<TException>(
+            Func<AddErrorInfo, ExecError, Task> func,
+            Layer layer,
+            string service,
+            string operation,
+            string genericErrorMessage = null,
+            bool throwGenericException = true) where TException : BaseException;
+
+        T UseCatchException<T, TException>(
+            Func<AddErrorInfo, ExecError, T> func,
+            Layer layer,
+            string service,
+            string operation,
+            string genericErrorMessage = null,
+            bool throwGenericException = true) where TException : BaseException;
+
+        void UseCatchException<TException>(
+            Action<AddErrorInfo, ExecError> func,
             Layer layer,
             string service,
             string operation,

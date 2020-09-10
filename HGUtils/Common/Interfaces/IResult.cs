@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace HGUtils.Common.Interfaces
+﻿namespace HGUtils.Common.Interfaces
 {
     public interface IResult
     {

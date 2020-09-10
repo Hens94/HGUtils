@@ -1,13 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace HGUtils.Common.Enums
+﻿namespace HGUtils.Common.Enums
 {
     public enum ResultType
     {
         Success = 0,
         WithWarning = 111,
-        Error = 999
+        WithNoContent = 222,
+        BadRequest = 666,
+        DatabaseError = 777,
+        ThirdPartyError = 888,
+        ApiError = 999
     }
 }

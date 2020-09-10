@@ -1,8 +1,5 @@
 ﻿using HGUtils.Common.Enums;
 using HGUtils.Common.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace HGUtils.Common.Models
 {
@@ -14,7 +11,7 @@ namespace HGUtils.Common.Models
 
         public Result() { }
 
-        public Result(string message, ResultType resultType = ResultType.Error, string detailMessage = null)
+        public Result(string message, ResultType resultType = ResultType.ApiError, string detailMessage = null)
         {
             Code = (int)resultType;
             Message = message;
@@ -24,7 +21,7 @@ namespace HGUtils.Common.Models
 
     public class Result<T> : Result, IResult<T> where T : class
     {
-        public T Data { get; set; }
+        public T Results { get; set; }
 
         public Result() { }
 
@@ -32,15 +29,15 @@ namespace HGUtils.Common.Models
         {
             Code = (int)resultType;
             Message = DetailMessage = message;
-            Data = data;
+            Results = data;
         }
 
-        public Result(string message, ResultType resultType = ResultType.Error, string detailMessage = null)
+        public Result(string message, ResultType resultType = ResultType.ApiError, string detailMessage = null)
         {
             Code = (int)resultType;
             Message = message;
             DetailMessage = detailMessage ?? message;
-            Data = null;
+            Results = null;
         }
     }
 }

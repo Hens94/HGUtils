@@ -1,6 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using HGUtils.Common.Enums;
+using HGUtils.Common.Interfaces;
+using System;
 
 namespace HGUtils.Helpers.Common
 {
@@ -11,5 +11,8 @@ namespace HGUtils.Helpers.Common
 
         public static T UseIf<T>(this T obj, bool conditional, Func<T, T> funcIf) =>
             conditional ? funcIf(obj) : obj;
+
+        public static bool IsSuccess(this IResult result) =>
+            Enum.TryParse<ResultType>(result.Code.ToString(), out var resultType) && resultType.Equals(ResultType.Success);
     }
 }
