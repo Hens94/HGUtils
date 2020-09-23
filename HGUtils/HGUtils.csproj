@@ -3,11 +3,10 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Authors>Henry Gadea</Authors>
-    <Description>Utilidades para facilitar desarrollo de API.
-Manejador de errores y logging</Description>
+    <Description>Utilidades para facilitar desarrollo de API</Description>
     <PackageTags>netcore3.1, api, rest, logging, errorHandler</PackageTags>
     <NeutralLanguage></NeutralLanguage>
-    <Version>1.0.4</Version>
+    <Version>1.0.5</Version>
   </PropertyGroup>
 
   <ItemGroup>
