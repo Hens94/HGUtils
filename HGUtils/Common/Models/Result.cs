@@ -40,4 +40,16 @@ namespace HGUtils.Common.Models
             Results = null;
         }
     }
+
+    public class ResultWithPagination<TResult> : Result<TResult> where TResult : class
+    {
+        public IPaginationResponse Pagination { get; set; }
+
+        public ResultWithPagination(
+            TResult data,
+            IPaginationResponse pagination) : base(data)
+        {
+            Pagination = pagination;
+        }
+    }
 }
