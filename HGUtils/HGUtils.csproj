@@ -6,7 +6,7 @@
     <Description>Utilidades para facilitar desarrollo de API</Description>
     <PackageTags>netcore3.1, api, rest, logging, errorHandler</PackageTags>
     <NeutralLanguage></NeutralLanguage>
-    <Version>1.0.5</Version>
+    <Version>1.0.6</Version>
   </PropertyGroup>
 
   <ItemGroup>
