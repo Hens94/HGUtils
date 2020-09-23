@@ -20,4 +20,10 @@ namespace HGUtils.Common.ViewModels
         [JsonPropertyName("results")]
         public T Results { get; set; }
     }
+
+    public class ResultWithPaginationViewModel<TResult> : ResultViewModel<TResult> where TResult : class
+    {
+        [JsonPropertyName("pagination")]
+        public IPaginationResponse Pagination { get; set; }
+    }
 }
