@@ -5,7 +5,8 @@
         Success = 0,
         WithWarning = 111,
         WithNoContent = 222,
-        BadRequest = 666,
+        NotFound = 333,
+        BadRequest = 444,
         DatabaseError = 777,
         ThirdPartyError = 888,
         ApiError = 999
