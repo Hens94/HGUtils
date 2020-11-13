@@ -191,5 +191,30 @@ namespace HGUtils.Helpers.HttpClient
 
             return response;
         }
+
+        public static async Task<HttpResponseMessage> SendAsync(
+            this System.Net.Http.HttpClient httpClient,
+            HttpRequestMessage httpRequest,
+            string authToken = null,
+            bool writeInLogs = false)
+        {
+            HttpResponseMessage response;
+
+            if (authToken is null)
+            {
+                response = await httpClient
+                   .SendAsync(httpRequest);
+            }
+            else
+            {
+                response = await httpClient
+                    .AddAuthorizationHeader(authToken)
+                    .SendAsync(httpRequest);
+            }
+
+            if (writeInLogs) await response.WriteRequestAndResponseInLogsAsync();
+
+            return response;
+        }
     }
 }
