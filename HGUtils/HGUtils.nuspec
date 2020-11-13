@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package >
+  <metadata>
+    <id>HGUtils</id>
+    <version>1.0.7</version>
+    <title>HGUtils</title>
+    <authors>Henry Gadea</authors>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <license type="expression">MIT</license>
+    <projectUrl>https://github.com/Hens94/HGUtils</projectUrl>
+	<repository type="git" url="https://github.com/Hens94/HGUtils.git" branch="master" />
+    <iconUrl>https://www.iconspng.com/uploads/mercury-symbol/mercury-symbol.png</iconUrl>
+    <icon>https://www.iconspng.com/uploads/mercury-symbol/mercury-symbol.png</icon>
+    <description>Utilidades para facilitar desarrollo de APIs con .Net Core 3.1</description>
+    <releaseNotes></releaseNotes>
+    <copyright>Copyright © 2020</copyright>
+    <tags>NetCore3.1 API REST Logging ErrorHandler HttpHelpers</tags>
+	<dependencies>
+		<dependency id="Dapper" version="2.0.35" />
+		<dependency id="FluentValidation.AspNetCore" version="9.2.0" />
+		<dependency id="Microsoft.AspNetCore.Hosting" version="2.2.7" />
+		<dependency id="Microsoft.AspNetCore.Http.Abstractions" version="2.2.0" />
+		<dependency id="Microsoft.Extensions.Configuration.Abstractions" version="3.1.8" />
+		<dependency id="Microsoft.Extensions.Configuration.Binder" version="3.1.8" />
+		<dependency id="Microsoft.Extensions.DependencyInjection.Abstractions" version="3.1.8" />
+		<dependency id="Microsoft.Extensions.Hosting.Abstractions" version="3.1.8" /> 
+		<dependency id="Serilog" version="2.10.0" />
+		<dependency id="Serilog.AspNetCore" version="3.4.0" />
+		<dependency id="System.Data.SqlClient" version="4.8.2" />
+		<dependency id="System.Net.Http" version="4.3.4" />
+	</dependencies>
+  </metadata>
+</package>
