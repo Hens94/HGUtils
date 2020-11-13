@@ -3,10 +3,11 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Authors>Henry Gadea</Authors>
-    <Description>Utilidades para facilitar desarrollo de API</Description>
-    <PackageTags>netcore3.1, api, rest, logging, errorHandler</PackageTags>
+    <Description>Utilidades para facilitar desarrollo de APIs con .Net Core 3.1</Description>
+    <PackageTags>netcore3.1, api, rest, logging, errorHandler, httpHelpers</PackageTags>
     <NeutralLanguage></NeutralLanguage>
-    <Version>1.0.6</Version>
+    <Version>1.0.7</Version>
+    <Copyright>Copyright © 2020</Copyright>
   </PropertyGroup>
 
   <ItemGroup>
