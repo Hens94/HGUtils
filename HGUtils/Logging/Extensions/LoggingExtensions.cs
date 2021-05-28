@@ -7,6 +7,7 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace HGUtils.Logging.Extensions
@@ -17,7 +18,17 @@ namespace HGUtils.Logging.Extensions
         {
             request.EnableBuffering();
 
-            var requestBody = await new StreamReader(request.Body).ReadToEndAsync();
+            string requestBody;
+
+            if (request.HasFormContentType && (request.Form?.Files?.Any() ?? false))
+            {
+                var formModel = request.Form.Files.Select(x => new { x.FileName, x.Name, x.ContentType, x.ContentDisposition, x.Length });
+                requestBody = JsonSerializer.Serialize(formModel);
+            }
+            else
+            {
+                requestBody = await new StreamReader(request.Body).ReadToEndAsync();
+            }
 
             request.Body.Position = 0;
 
